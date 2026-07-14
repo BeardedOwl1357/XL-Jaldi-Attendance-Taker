@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Taker Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Student Body Events</p>
+        <h1>Attendance without calling 400 names</h1>
+        <p class="hero-text">
+          Load the roster, listen row by row, and let the app turn announced roll numbers
+          into a live present list with absentees generated automatically.
+        </p>
+      </div>
+      <div class="hero-card">
+        <p class="hero-card-label">Recommended flow</p>
+        <ol>
+          <li>Start with the full roster.</li>
+          <li>Students announce only their own roll numbers.</li>
+          <li>Operator enters each roll quickly.</li>
+          <li>Everyone not checked in becomes absent.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="panel controls-panel">
+      <div class="panel-head">
+        <h2>Setup</h2>
+        <p>Use the sample roster or paste/upload your own list.</p>
+      </div>
+
+      <div class="setup-grid">
+        <div class="setup-card">
+          <label class="field-label" for="rosterInput">Roster input</label>
+          <textarea id="rosterInput" spellcheck="false" placeholder="One roll number per line&#10;B26001&#10;H26014&#10;BI26031&#10;BL26052"></textarea>
+          <div class="button-row">
+            <button id="loadSampleBtn" class="ghost-button" type="button">Load sample roster</button>
+            <button id="loadRosterBtn" class="primary-button" type="button">Load roster</button>
+          </div>
+        </div>
+
+        <div class="setup-card">
+          <label class="field-label" for="fileInput">Upload roster file</label>
+          <input id="fileInput" type="file" accept=".txt,.csv">
+          <p class="helper-text">Accepted: plain text or CSV with roll numbers in any column.</p>
+
+          <label class="field-label" for="quickAddInput">Quick add student</label>
+          <div class="quick-add-row">
+            <input id="quickAddInput" type="text" placeholder="Enter roll number">
+            <button id="quickAddBtn" class="ghost-button" type="button">Add</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel entry-panel">
+      <div class="panel-head">
+        <h2>Live attendance</h2>
+        <p>Fast input built for structured roll numbers.</p>
+      </div>
+
+      <div class="entry-grid">
+        <div class="entry-card">
+          <label class="field-label" for="prefixButtons">Prefix shortcuts</label>
+          <div id="prefixButtons" class="prefix-grid">
+            <button class="prefix-button active" data-prefix="" type="button">Auto</button>
+            <button class="prefix-button" data-prefix="B26" type="button">B26</button>
+            <button class="prefix-button" data-prefix="H26" type="button">H26</button>
+            <button class="prefix-button" data-prefix="BI26" type="button">BI26</button>
+            <button class="prefix-button" data-prefix="BL26" type="button">BL26</button>
+          </div>
+
+          <label class="field-label" for="attendanceInput">Attendance input</label>
+          <div class="attendance-input-row">
+            <input id="attendanceInput" type="text" autocomplete="off" placeholder="Type full roll or suffix">
+            <button id="markPresentBtn" class="primary-button" type="button">Mark present</button>
+          </div>
+
+          <p class="helper-text">
+            Tip: choose a prefix and type only digits, or paste multiple roll numbers separated by spaces/new lines.
+          </p>
+
+          <div id="statusBanner" class="status-banner neutral">Load a roster to begin.</div>
+        </div>
+
+        <div class="entry-card compact-card">
+          <div class="stat-grid">
+            <div class="stat-block">
+              <span class="stat-label">Roster</span>
+              <strong id="totalCount">0</strong>
+            </div>
+            <div class="stat-block">
+              <span class="stat-label">Present</span>
+              <strong id="presentCount">0</strong>
+            </div>
+            <div class="stat-block">
+              <span class="stat-label">Absent</span>
+              <strong id="absentCount">0</strong>
+            </div>
+            <div class="stat-block">
+              <span class="stat-label">Duplicates</span>
+              <strong id="duplicateCount">0</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel results-panel">
+      <div class="panel-head">
+        <h2>Review</h2>
+        <p>Keep an eye on absentees and entry quality in real time.</p>
+      </div>
+
+      <div class="results-grid">
+        <div class="results-card">
+          <div class="results-head">
+            <h3>Present list</h3>
+            <button id="copyPresentBtn" class="ghost-button" type="button">Copy</button>
+          </div>
+          <div id="presentList" class="list-box empty-state">No one marked present yet.</div>
+        </div>
+
+        <div class="results-card">
+          <div class="results-head">
+            <h3>Absent list</h3>
+            <button id="copyAbsentBtn" class="ghost-button" type="button">Copy</button>
+          </div>
+          <div id="absentList" class="list-box empty-state">Load a roster to generate absentees.</div>
+        </div>
+
+        <div class="results-card">
+          <div class="results-head">
+            <h3>Issues</h3>
+            <button id="clearIssuesBtn" class="ghost-button" type="button">Clear</button>
+          </div>
+          <div id="issueList" class="list-box empty-state">Unknown rolls and duplicates will show up here.</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
